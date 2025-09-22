@@ -535,4 +535,8 @@ module.exports = {
 
 ---
 
-Built with ❤️ for IoT developers
+**Built with ❤️ for IoT developers**
+
+**Author:** Nguyễn Trung Kiệt - TDMU  
+**Course:** IoT & Web Development  
+**Institution:** Thủ Dầu Một University

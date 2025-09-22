@@ -303,3 +303,11 @@ For issues and questions:
 3. Test MQTT broker independently
 4. Review this documentation
 5. Check ESP32 Arduino core documentation
+
+---
+
+**ESP32 IoT Firmware for Educational Projects**
+
+**Author:** Nguyễn Trung Kiệt - TDMU  
+**Course:** IoT & Web Development  
+**Institution:** Thủ Dầu Một University

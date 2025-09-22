@@ -278,7 +278,11 @@ npm run preview
 
 ---
 
-Built with ❤️ using React + TypeScript + Vite
+**Built with ❤️ using React + TypeScript + Vite**
+
+**Author:** Nguyễn Trung Kiệt - TDMU  
+**Course:** IoT & Web Development  
+**Institution:** Thủ Dầu Một University
 
 ## Chạy development
 

@@ -216,3 +216,9 @@ npm run deploy:docker
 ---
 
 Need help? Check the troubleshooting section in the main README or create an issue on GitHub.
+
+**Quick Start Guide for IoT Web Dashboard**
+
+**Author:** Nguyễn Trung Kiệt - TDMU  
+**Course:** IoT & Web Development  
+**Institution:** Thủ Dầu Một University
