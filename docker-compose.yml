@@ -1,0 +1,54 @@
+# IoT Dashboard - Docker Configuration
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - VITE_API_BASE_URL=http://localhost:3001
+      - VITE_WS_URL=ws://localhost:3001
+    depends_on:
+      - server
+    networks:
+      - iot-dashboard
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - MQTT_BROKER_URL=mqtt://localhost:1883
+      - CORS_ORIGIN=http://localhost:3000
+    volumes:
+      - ./server/logs:/app/logs
+    networks:
+      - iot-dashboard
+
+  mqtt-broker:
+    image: eclipse-mosquitto:2
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - mqtt_data:/mosquitto/data
+      - mqtt_logs:/mosquitto/log
+    networks:
+      - iot-dashboard
+
+networks:
+  iot-dashboard:
+    driver: bridge
+
+volumes:
+  mqtt_data:
+  mqtt_logs:

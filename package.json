@@ -1,0 +1,58 @@
+{
+  "name": "iot-web-dashboard",
+  "version": "1.0.0",
+  "description": "IoT Web Dashboard for ESP32-C3/S3 with DHT22 sensor and LED control - Realtime monitoring and control via MQTT",
+  "private": true,
+  "workspaces": [
+    "app",
+    "server"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace=app\" \"npm run dev --workspace=server\"",
+    "dev:app": "npm run dev --workspace=app",
+    "dev:server": "npm run dev --workspace=server", 
+    "build": "npm run build --workspace=app && npm run build --workspace=server",
+    "build:app": "npm run build --workspace=app",
+    "build:server": "npm run build --workspace=server",
+    "start": "npm run start --workspace=server",
+    "start:app": "npm run preview --workspace=app",
+    "start:server": "npm run start --workspace=server",
+    "ws-mock": "npm run ws-mock --workspace=server",
+    "install-all": "npm install && npm install --workspace=app && npm install --workspace=server",
+    "install:deps": "npm ci --include=dev && npm ci --workspace=app && npm ci --workspace=server",
+    "clean": "npm run clean --workspace=app && npm run clean --workspace=server",
+    "clean:node-modules": "rm -rf node_modules app/node_modules server/node_modules",
+    "clean:build": "npm run clean:build --workspace=app && npm run clean:build --workspace=server",
+    "lint": "npm run lint --workspace=app && npm run lint --workspace=server",
+    "lint:fix": "npm run lint:fix --workspace=app && npm run lint:fix --workspace=server",
+    "test": "npm run test --workspace=app && npm run test --workspace=server",
+    "test:app": "npm run test --workspace=app",
+    "test:server": "npm run test --workspace=server",
+    "test:watch": "npm run test:watch --workspace=app",
+    "test:coverage": "npm run test:coverage --workspace=app",
+    "type-check": "npm run type-check --workspace=app && npm run type-check --workspace=server",
+    "deploy:build": "npm run clean:build && npm run install:deps && npm run build",
+    "deploy:docker": "docker-compose up --build -d",
+    "deploy:docker:down": "docker-compose down",
+    "setup-dev": "node -e \"process.platform === 'win32' ? require('child_process').exec('scripts\\\\setup-dev.bat') : require('child_process').exec('chmod +x scripts/setup-dev.sh && ./scripts/setup-dev.sh')\"",
+    "validate": "node -e \"process.platform === 'win32' ? require('child_process').exec('scripts\\\\validate-setup.bat') : require('child_process').exec('chmod +x scripts/validate-setup.sh && ./scripts/validate-setup.sh')\"",
+    "postinstall": "npm run install-all"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": [
+    "iot",
+    "esp32",
+    "esp32-c3",
+    "esp32-s3", 
+    "mqtt",
+    "dashboard",
+    "realtime",
+    "dht22",
+    "temperature",
+    "humidity"
+  ],
+  "author": "IoT Dashboard Team",
+  "license": "MIT"
+}
