@@ -63,18 +63,89 @@ Once running, access:
 - **Backend API**: http://localhost:3001
 - **MQTT Broker**: mqtt://localhost:1883
 
-## 🔧 ESP32 Configuration
+## 🔧 ESP32 Hardware Setup
 
-1. Open `firmware/secrets.h` 
-2. Configure your WiFi and MQTT settings:
+### Required Components
+- ESP32-C3/S3 development board
+- DHT22 (AM2302) temperature/humidity sensor  
+- Jumper wires (3 pieces)
+- Breadboard (optional)
+- USB cable for programming
+
+### Step-by-Step Wiring
+
+1. **Power Connections:**
+   ```
+   DHT22 Pin 1 (VCC) → ESP32 3.3V
+   DHT22 Pin 4 (GND) → ESP32 GND
+   ```
+
+2. **Data Connection:**
+   ```
+   DHT22 Pin 2 (DATA) → ESP32 GPIO2
+   ```
+
+3. **Visual Guide:**
+   ```
+   ESP32-C3:              DHT22:
+   ┌─────────┐           ┌─────────┐
+   │   3.3V  ●●●●●●●●●●●●● VCC     │
+   │   GND   ●●●●●●●●●●●●● GND     │
+   │   GPIO2 ●●●●●●●●●●●●● DATA    │
+   │         │           │   NC    │
+   │   GPIO8 ● (LED)     └─────────┘
+   └─────────┘
+   ```
+
+### Firmware Configuration
+
+1. **Install Arduino IDE** (if not already installed)
+   - Download from: https://www.arduino.cc/en/software
+
+2. **Setup ESP32 Board:**
+   - File → Preferences → Additional Board Manager URLs
+   - Add: `https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json`
+   - Tools → Board → Board Manager → Search "ESP32" → Install
+
+3. **Install Required Libraries:**
+   - Tools → Manage Libraries → Install:
+     - `DHT sensor library` by Adafruit
+     - `PubSubClient` by Nick O'Leary  
+     - `ArduinoJson` by Benoit Blanchon
+
+4. **Configure WiFi & MQTT:**
    ```cpp
+   // Copy firmware/secrets.h.template to firmware/secrets.h
    #define WIFI_SSID "YourWiFiName"
    #define WIFI_PASSWORD "YourWiFiPassword"
    #define MQTT_BROKER "192.168.1.100"  // Your computer's IP
    ```
-3. Flash the firmware to your ESP32-C3/S3
 
-## 🧪 Testing
+5. **Upload Firmware:**
+   - Open `firmware/main.ino`
+   - Select Board: ESP32C3 Dev Module
+   - Select Port: (your ESP32 port)
+   - Click Upload
+
+### Verify Connection
+Open Serial Monitor (115200 baud) and look for:
+```
+✅ WiFi connected!
+📍 IP Address: 192.168.1.xxx
+✅ MQTT connected!
+📤 Telemetry sent: T=25.6°C, H=60.3%
+```
+
+## 🔧 ESP32 Configuration
+
+1. Open `firmware/secrets.h`
+2. Configure your WiFi and MQTT settings:
+```cpp
+#define WIFI_SSID "YourWiFiName"
+#define WIFI_PASSWORD "YourWiFiPassword"
+#define MQTT_BROKER "192.168.1.100"  // Your computer's IP
+```
+3. Flash the firmware to your ESP32-C3/S3## 🧪 Testing
 
 ```bash
 # Run all tests
@@ -117,6 +188,24 @@ npm run deploy:docker:down
 docker system prune -f
 npm run deploy:docker
 ```
+
+### ESP32 Issues:
+
+#### WiFi Connection Failed:
+- Ensure WiFi is 2.4GHz (not 5GHz)
+- Check SSID and password in `secrets.h`
+- Verify signal strength
+
+#### MQTT Connection Failed:
+- Check computer's IP address: `ipconfig` (Windows) or `ifconfig` (Linux/Mac)
+- Ensure MQTT broker is running: `docker-compose ps`
+- Test connectivity: `ping <your-computer-ip>`
+
+#### No Sensor Data:
+- Check DHT22 wiring connections
+- Verify 3.3V power (not 5V)
+- Try different GPIO pin
+- Open Serial Monitor for debug info
 
 ## 📖 Next Steps
 

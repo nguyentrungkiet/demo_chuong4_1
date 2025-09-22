@@ -28,6 +28,41 @@ Built-in LED:
 └── ESP32-S3: GPIO48
 ```
 
+### Detailed Connection Steps
+
+1. **Power Connections:**
+   - Connect DHT22 VCC (pin 1) to ESP32 3.3V pin
+   - Connect DHT22 GND (pin 4) to ESP32 GND pin
+   - **Important:** Use 3.3V, NOT 5V to avoid damage
+
+2. **Data Connection:**
+   - Connect DHT22 DATA (pin 2) to ESP32 GPIO2
+   - Add 10kΩ pull-up resistor between DATA and VCC (optional but recommended)
+
+3. **Visual Pin Layout:**
+   ```
+   ESP32-C3 DevKit:        DHT22 Sensor:
+   ┌─────────────────┐     ┌───────────────┐
+   │        3.3V ●---│-----│● VCC (Pin 1)  │
+   │        GND  ●---│-----│● GND (Pin 4)  │
+   │        GPIO2●---│-----│● DATA (Pin 2) │
+   │                 │     │  NC (Pin 3)   │
+   │        GPIO8●   │     └───────────────┘
+   │    (Built-in LED)│     
+   └─────────────────┘     
+   ```
+
+### Alternative GPIO Pins
+If GPIO2 is unavailable, you can use:
+- **ESP32-C3:** GPIO0, GPIO1, GPIO3, GPIO4, GPIO5
+- **ESP32-S3:** GPIO1, GPIO3, GPIO4, GPIO5, GPIO6
+- **ESP32 Classic:** GPIO4, GPIO5, GPIO12, GPIO13, GPIO14
+
+**Note:** Update `config.h` if using different pins:
+```cpp
+#define DHT_PIN 4  // Change from GPIO2 to GPIO4
+```
+
 ## Software Requirements
 
 ### Arduino IDE Setup
@@ -61,6 +96,35 @@ Install these libraries via Arduino Library Manager:
 #define WIFI_PASSWORD "YourWiFiPassword"
 #define MQTT_USERNAME ""  // Leave empty if no auth
 #define MQTT_PASSWORD ""  // Leave empty if no auth
+```
+
+**Important WiFi Notes:**
+- ESP32 only supports 2.4GHz WiFi networks (not 5GHz)
+- Ensure your WiFi network name doesn't contain special characters
+- WiFi password must be 8-63 characters long
+
+### 2. MQTT Broker Configuration
+
+Find your computer's IP address where the MQTT broker is running:
+
+**Windows:**
+```cmd
+ipconfig
+# Look for "IPv4 Address" (e.g., 192.168.1.100)
+```
+
+**Linux/Mac:**
+```bash
+ip addr show
+# or
+ifconfig
+# Look for inet address (e.g., 192.168.1.100)
+```
+
+Then update `config.h`:
+```cpp
+#define MQTT_BROKER "192.168.1.100"  // Your computer's IP
+#define MQTT_PORT 1883               // Default MQTT port
 ```
 
 ### 2. Device Configuration
